@@ -12,10 +12,10 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "Notes")
 public class Note {
-    
+
     @Id
-    @GeneratedValue(generator="system-uuid")
-    @GenericGenerator(name="system-uuid", strategy = "uuid")
+    @GeneratedValue(generator = "system-uuid")
+    @GenericGenerator(name = "system-uuid", strategy = "uuid")
     private String noteId;
 
     private String noteBody;
@@ -32,7 +32,8 @@ public class Note {
         this.noteBody = noteBody;
     }
 
-    public Note() {}
+    public Note() {
+    }
 
     public Note(String noteId, String noteBody) {
         this.noteId = noteId;

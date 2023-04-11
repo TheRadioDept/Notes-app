@@ -4,6 +4,6 @@ import org.springframework.data.repository.CrudRepository;
 
 import dev.hld.Notes.models.Note;
 
-public interface NotesRepository extends CrudRepository<Note, String>{
-    
+public interface NotesRepository extends CrudRepository<Note, String> {
+
 }

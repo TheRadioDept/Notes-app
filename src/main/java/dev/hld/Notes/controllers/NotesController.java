@@ -31,16 +31,18 @@ public class NotesController {
     private UserRepository userRepository;
 
     @GetMapping("/users/{userId}/notes")
-    public ResponseEntity<List<Note>> getAllNotesByUserId(@PathVariable(value = "userId") String userId) throws RelationNotFoundException {
+    public ResponseEntity<List<Note>> getAllNotesByUserId(@PathVariable(value = "userId") String userId)
+            throws RelationNotFoundException {
         User user = userRepository.findById(userId)
-            .orElseThrow(() -> new RelationNotFoundException("Not found User with id = " + userId));
+                .orElseThrow(() -> new RelationNotFoundException("Not found User with id = " + userId));
         List<Note> notes = new ArrayList<Note>();
         notes.addAll(user.getNote());
         return new ResponseEntity<>(notes, HttpStatus.OK);
     }
 
     @PostMapping("/users/{userId}/notes")
-    public ResponseEntity<Note> createNote(@PathVariable(value = "userId") String userId, @RequestBody Note noteRequest) throws RelationNotFoundException {
+    public ResponseEntity<Note> createNote(@PathVariable(value = "userId") String userId, @RequestBody Note noteRequest)
+            throws RelationNotFoundException {
         Note notes = userRepository.findById(userId).map(user -> {
             user.getNote().add(noteRequest);
             return notesRepository.save(noteRequest);

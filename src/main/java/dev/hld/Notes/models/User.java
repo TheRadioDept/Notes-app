@@ -19,9 +19,9 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "users")
 public class User {
-    
+
     @Id
-    @GeneratedValue(generator="system-uuid", strategy = GenerationType.AUTO)
+    @GeneratedValue(generator = "system-uuid", strategy = GenerationType.AUTO)
     @Column(name = "userId", unique = true)
     private String userId;
 
@@ -85,7 +85,8 @@ public class User {
         this.notes = note;
     }
 
-    public User(){}
+    public User() {
+    }
 
     public User(String userId, String userName, String email, String password, String dateOfBirth) {
         this.userId = userId;

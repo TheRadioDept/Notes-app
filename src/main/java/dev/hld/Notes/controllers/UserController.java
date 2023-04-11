@@ -16,7 +16,7 @@ import dev.hld.Notes.repositories.UserRepository;
 @CrossOrigin(origins = "*")
 @RestController
 public class UserController {
-    
+
     @Autowired
     private UserRepository userRepository;
 

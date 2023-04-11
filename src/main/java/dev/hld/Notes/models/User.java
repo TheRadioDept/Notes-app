@@ -1,14 +1,19 @@
 package dev.hld.Notes.models;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
-//import org.hibernate.annotations.GenericGenerator;
+import jakarta.persistence.CascadeType;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -17,8 +22,7 @@ public class User {
     
     @Id
     @GeneratedValue(generator="system-uuid", strategy = GenerationType.AUTO)
-    //@GenericGenerator(name="system-uuid", strategy = "uuid")
-    @Column(name = "userId")
+    @Column(name = "userId", unique = true)
     private String userId;
 
     @Column(name = "userName")
@@ -32,6 +36,10 @@ public class User {
 
     @Column(name = "dateOfBirth")
     private String dateOfBirth;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @JoinColumn(name = "userId")
+    private Set<Note> notes = new HashSet<>();
 
     public String getUserId() {
         return this.userId;
@@ -67,6 +75,14 @@ public class User {
 
     public void setDateOfBirth(String dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
+    }
+
+    public Set<Note> getNote() {
+        return this.notes;
+    }
+
+    public void setNote(Set<Note> note) {
+        this.notes = note;
     }
 
     public User(){}

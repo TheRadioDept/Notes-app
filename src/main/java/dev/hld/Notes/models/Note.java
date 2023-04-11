@@ -10,8 +10,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "notes")
-public class Notes {
+@Table(name = "Notes")
+public class Note {
     
     @Id
     @GeneratedValue(generator="system-uuid")
@@ -32,14 +32,14 @@ public class Notes {
         this.noteBody = noteBody;
     }
 
-    public Notes() {}
+    public Note() {}
 
-    public Notes(String noteId, String noteBody) {
+    public Note(String noteId, String noteBody) {
         this.noteId = noteId;
         this.noteBody = noteBody;
     }
 
-    public Notes(String noteBody) {
+    public Note(String noteBody) {
         this(UUID.randomUUID().toString(), noteBody);
     }
 }

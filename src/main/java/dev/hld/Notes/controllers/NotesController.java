@@ -38,7 +38,7 @@ public class NotesController {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RelationNotFoundException("Not found User with id = " + userId));
         List<Note> notes = new ArrayList<Note>();
-        notes.addAll(user.getNote());
+        notes.addAll(user.getNotes());
         return new ResponseEntity<>(notes, HttpStatus.OK);
     }
 
@@ -62,7 +62,7 @@ public class NotesController {
     public ResponseEntity<Note> createNote(@PathVariable(value = "userId") String userId, @RequestBody Note noteRequest)
             throws RelationNotFoundException {
         Note notes = userRepository.findById(userId).map(user -> {
-            user.getNote().add(noteRequest);
+            user.getNotes().add(noteRequest);
             return notesRepository.save(noteRequest);
         }).orElseThrow(() -> new RelationNotFoundException("Not found User with id = " + userId));
 

@@ -2,38 +2,25 @@ package dev.hld.Notes.models;
 
 import java.util.UUID;
 
-import org.hibernate.annotations.GenericGenerator;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
+@NoArgsConstructor
 @Entity
 @Table(name = "Notes")
-public class Note {
+@Data public class Note {
 
     @Id
-    @GeneratedValue(generator = "system-uuid")
-    @GenericGenerator(name = "system-uuid", strategy = "uuid")
+    @GeneratedValue(generator = "system-uuid", strategy = GenerationType.AUTO)
     private String noteId;
 
     private String noteBody;
-
-    public String getNoteId() {
-        return this.noteId;
-    }
-
-    public String getNoteBody() {
-        return this.noteBody;
-    }
-
-    public void setNoteBody(String noteBody) {
-        this.noteBody = noteBody;
-    }
-
-    public Note() {
-    }
 
     public Note(String noteId, String noteBody) {
         this.noteId = noteId;

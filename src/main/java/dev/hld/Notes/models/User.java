@@ -4,8 +4,10 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-import jakarta.persistence.CascadeType;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -16,9 +18,10 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
+@NoArgsConstructor
 @Entity
 @Table(name = "users")
-public class User {
+@Data public class User {
 
     @Id
     @GeneratedValue(generator = "system-uuid", strategy = GenerationType.AUTO)
@@ -40,53 +43,6 @@ public class User {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     @JoinColumn(name = "userId")
     private Set<Note> notes = new HashSet<>();
-
-    public String getUserId() {
-        return this.userId;
-    }
-
-    public String getUserName() {
-        return this.userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public String getEmail() {
-        return this.email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return this.password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getDateOfBirth() {
-        return this.dateOfBirth;
-    }
-
-    public void setDateOfBirth(String dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
-    }
-
-    public Set<Note> getNote() {
-        return this.notes;
-    }
-
-    public void setNote(Set<Note> note) {
-        this.notes = note;
-    }
-
-    public User() {
-    }
 
     public User(String userId, String userName, String email, String password, String dateOfBirth) {
         this.userId = userId;

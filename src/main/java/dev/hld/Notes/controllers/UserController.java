@@ -37,7 +37,7 @@ public class UserController {
     }
 
     @GetMapping("/user/{id}")
-    public ResponseEntity<UserDto> userDetail(@PathVariable int userId) {
+    public ResponseEntity<UserDto> userDetail(@PathVariable("id") int userId) {
         return ResponseEntity.ok(userSerive.getUserById(userId));
     }
 

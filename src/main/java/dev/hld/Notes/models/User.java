@@ -20,7 +20,7 @@ import jakarta.persistence.OneToMany;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Entity
+@Entity(name = "users")
 public class User {
 
    @Id

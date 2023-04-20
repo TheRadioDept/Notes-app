@@ -10,7 +10,6 @@ import org.springframework.boot.jdbc.EmbeddedDatabaseConnection;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
-import dev.hld.Notes.dto.UserResponce;
 import dev.hld.Notes.models.User;
 
 @DataJpaTest
@@ -73,7 +72,7 @@ public class UserRepositoryTest {
                 .userName("testName")
                 .emailAddress("test@test")
                 .userPassword("hld").build();
-        
+
         userRepository.save(user);
 
         User userList = userRepository.findByUserName(user.getUserName()).get();
@@ -87,7 +86,7 @@ public class UserRepositoryTest {
                 .userName("testName")
                 .emailAddress("test@test")
                 .userPassword("hld").build();
-        
+
         userRepository.save(user);
 
         User userSave = userRepository.findById(user.getId()).get();
@@ -97,7 +96,7 @@ public class UserRepositoryTest {
 
         User updateUser = userRepository.save(userSave);
 
-        Assertions.assertThat(updateUser.getUserName()).isEqualTo("newTest");
+        Assertions.assertThat(updateUser.getUserName()).isEqualTo("newTestName");
         Assertions.assertThat(updateUser.getEmailAddress()).isEqualTo("new@test");
         Assertions.assertThat(updateUser.getUserPassword()).isEqualTo("newHld");
     }
@@ -108,7 +107,7 @@ public class UserRepositoryTest {
                 .userName("testName")
                 .emailAddress("test@test")
                 .userPassword("hld").build();
-        
+
         userRepository.save(user);
 
         userRepository.deleteById(user.getId());

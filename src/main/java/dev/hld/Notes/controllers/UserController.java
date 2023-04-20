@@ -1,7 +1,5 @@
 package dev.hld.Notes.controllers;
 
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -23,16 +21,14 @@ public class UserController {
 
     private UserSerive userSerive;
 
-    @Autowired
     public UserController(UserSerive userSerive) {
         this.userSerive = userSerive;
     }
 
     @GetMapping("/user")
     public ResponseEntity<UserResponce> getUser(
-        @RequestParam(value = "pageNo", defaultValue = "0", required = false) int pageNo,
-        @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize
-    ) {
+            @RequestParam(value = "pageNo", defaultValue = "0", required = false) int pageNo,
+            @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
         return new ResponseEntity<>(userSerive.getAllUsers(pageNo, pageSize), HttpStatus.OK);
     }
 

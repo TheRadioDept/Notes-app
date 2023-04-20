@@ -3,7 +3,6 @@ package dev.hld.Notes.service.impl;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import dev.hld.Notes.dto.NoteDto;
@@ -20,7 +19,6 @@ public class NoteServiceImpl implements NoteService {
     private NotesRepository notesRepository;
     private UserRepository userRepository;
 
-    @Autowired
     public NoteServiceImpl(NotesRepository notesRepository, UserRepository userRepository) {
         this.notesRepository = notesRepository;
         this.userRepository = userRepository;

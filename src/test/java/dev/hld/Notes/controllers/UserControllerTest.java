@@ -15,10 +15,7 @@ import org.springframework.test.web.servlet.ResultActions;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-import org.springframework.web.servlet.mvc.method.annotation.RequestResponseBodyMethodProcessor;
-
 import dev.hld.Notes.dto.NoteDto;
 import dev.hld.Notes.dto.UserDto;
 import dev.hld.Notes.dto.UserResponce;
@@ -47,17 +44,14 @@ public class UserControllerTest {
 
     @Autowired
     private ObjectMapper objectMapper;
-    private User user;
-    private Note note;
     private UserDto userDto;
-    private NoteDto noteDto;
 
     @BeforeEach
     public void init() {
-        user = User.builder().userName("testName").emailAddress("test@test").userPassword("hld").build();
+        User.builder().userName("testName").emailAddress("test@test").userPassword("hld").build();
         userDto = UserDto.builder().userName("testName").emailAddress("test@test").userPassword("hld").build();
-        note = Note.builder().topic("testTopic").noteBody("testNote").build();
-        noteDto = NoteDto.builder().topic("testTopic").noteBody("testNote").build();
+        Note.builder().topic("testTopic").noteBody("testNote").build();
+        NoteDto.builder().topic("testTopic").noteBody("testNote").build();
     }
 
     @Test
@@ -71,7 +65,8 @@ public class UserControllerTest {
         response.andExpect(MockMvcResultMatchers.status().isCreated())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.userName", CoreMatchers.is(userDto.getUserName())))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.emailAddress", CoreMatchers.is(userDto.getEmailAddress())))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.userPassword", CoreMatchers.is(userDto.getUserPassword())));
+                .andExpect(
+                        MockMvcResultMatchers.jsonPath("$.userPassword", CoreMatchers.is(userDto.getUserPassword())));
     }
 
     @Test
@@ -100,9 +95,10 @@ public class UserControllerTest {
                 .content(objectMapper.writeValueAsString(userDto)));
 
         response.andExpect(MockMvcResultMatchers.status().isOk())
-        .andExpect(MockMvcResultMatchers.jsonPath("$.userName", CoreMatchers.is(userDto.getUserName())))
-        .andExpect(MockMvcResultMatchers.jsonPath("$.emailAddress", CoreMatchers.is(userDto.getEmailAddress())))
-        .andExpect(MockMvcResultMatchers.jsonPath("$.userPassword", CoreMatchers.is(userDto.getUserPassword())));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.userName", CoreMatchers.is(userDto.getUserName())))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.emailAddress", CoreMatchers.is(userDto.getEmailAddress())))
+                .andExpect(
+                        MockMvcResultMatchers.jsonPath("$.userPassword", CoreMatchers.is(userDto.getUserPassword())));
     }
 
     @Test
@@ -111,13 +107,14 @@ public class UserControllerTest {
         when(userSerive.updateUser(userDto, userId)).thenReturn(userDto);
 
         ResultActions response = mockMvc.perform(put("/user/1/update")
-        .contentType(MediaType.APPLICATION_JSON)
-        .content(objectMapper.writeValueAsString(userDto)));
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(userDto)));
 
         response.andExpect(MockMvcResultMatchers.status().isOk())
-        .andExpect(MockMvcResultMatchers.jsonPath("$.userName", CoreMatchers.is(userDto.getUserName())))
-        .andExpect(MockMvcResultMatchers.jsonPath("$.emailAddress", CoreMatchers.is(userDto.getEmailAddress())))
-        .andExpect(MockMvcResultMatchers.jsonPath("$.userPassword", CoreMatchers.is(userDto.getUserPassword())));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.userName", CoreMatchers.is(userDto.getUserName())))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.emailAddress", CoreMatchers.is(userDto.getEmailAddress())))
+                .andExpect(
+                        MockMvcResultMatchers.jsonPath("$.userPassword", CoreMatchers.is(userDto.getUserPassword())));
     }
 
     @Test
@@ -126,7 +123,7 @@ public class UserControllerTest {
         doNothing().when(userSerive).deleteUser(userId);
 
         ResultActions response = mockMvc.perform(delete("/user/1/delete")
-            .contentType(MediaType.APPLICATION_JSON));
+                .contentType(MediaType.APPLICATION_JSON));
 
         response.andExpect(MockMvcResultMatchers.status().isOk());
     }

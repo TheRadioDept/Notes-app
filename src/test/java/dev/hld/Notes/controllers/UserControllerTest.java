@@ -36,95 +36,105 @@ import org.hamcrest.CoreMatchers;
 @AutoConfigureMockMvc(addFilters = false)
 @ExtendWith(MockitoExtension.class)
 public class UserControllerTest {
-    @Autowired
-    private MockMvc mockMvc;
+        @Autowired
+        private MockMvc mockMvc;
 
-    @MockBean
-    private UserSerive userSerive;
+        @MockBean
+        private UserSerive userSerive;
 
-    @Autowired
-    private ObjectMapper objectMapper;
-    private UserDto userDto;
+        @Autowired
+        private ObjectMapper objectMapper;
+        private UserDto userDto;
 
-    @BeforeEach
-    public void init() {
-        User.builder().userName("testName").emailAddress("test@test").userPassword("hld").build();
-        userDto = UserDto.builder().userName("testName").emailAddress("test@test").userPassword("hld").build();
-        Note.builder().topic("testTopic").noteBody("testNote").build();
-        NoteDto.builder().topic("testTopic").noteBody("testNote").build();
-    }
+        @BeforeEach
+        public void init() {
+                User.builder().userName("testName").emailAddress("test@test").userPassword("hld").build();
+                userDto = UserDto.builder().userName("testName").emailAddress("test@test").userPassword("hld").build();
+                Note.builder().topic("testTopic").noteBody("testNote").build();
+                NoteDto.builder().topic("testTopic").noteBody("testNote").build();
+        }
 
-    @Test
-    public void UserController_CreateUser_ReturnCreated() throws Exception {
-        given(userSerive.createUser(ArgumentMatchers.any())).willAnswer((invocation -> invocation.getArgument(0)));
+        @Test
+        public void UserController_CreateUser_ReturnCreated() throws Exception {
+                given(userSerive.createUser(ArgumentMatchers.any()))
+                                .willAnswer((invocation -> invocation.getArgument(0)));
 
-        ResultActions response = mockMvc.perform(post("/user/create")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(userDto)));
+                ResultActions response = mockMvc.perform(post("/user/create")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(objectMapper.writeValueAsString(userDto)));
 
-        response.andExpect(MockMvcResultMatchers.status().isCreated())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.userName", CoreMatchers.is(userDto.getUserName())))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.emailAddress", CoreMatchers.is(userDto.getEmailAddress())))
-                .andExpect(
-                        MockMvcResultMatchers.jsonPath("$.userPassword", CoreMatchers.is(userDto.getUserPassword())));
-    }
+                response.andExpect(MockMvcResultMatchers.status().isCreated())
+                                .andExpect(MockMvcResultMatchers.jsonPath("$.userName",
+                                                CoreMatchers.is(userDto.getUserName())))
+                                .andExpect(MockMvcResultMatchers.jsonPath("$.emailAddress",
+                                                CoreMatchers.is(userDto.getEmailAddress())))
+                                .andExpect(
+                                                MockMvcResultMatchers.jsonPath("$.userPassword",
+                                                                CoreMatchers.is(userDto.getUserPassword())));
+        }
 
-    @Test
-    public void UserController_GetAllUsers_ReturnResponseDto() throws Exception {
-        UserResponce responseDto = UserResponce.builder().pageSize(10).last(true).pageNo(1)
-                .content(Arrays.asList(userDto)).build();
-        when(userSerive.getAllUsers(1, 10)).thenReturn(responseDto);
+        @Test
+        public void UserController_GetAllUsers_ReturnResponseDto() throws Exception {
+                UserResponce responseDto = UserResponce.builder().pageSize(10).last(true).pageNo(1)
+                                .content(Arrays.asList(userDto)).build();
+                when(userSerive.getAllUsers(1, 10)).thenReturn(responseDto);
 
-        ResultActions response = mockMvc.perform(get("/user")
-                .contentType(MediaType.APPLICATION_JSON)
-                .param("pageNo", "1")
-                .param("pageSize", "10"));
+                ResultActions response = mockMvc.perform(get("/user")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .param("pageNo", "1")
+                                .param("pageSize", "10"));
 
-        response.andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.content.size()",
-                        CoreMatchers.is(responseDto.getContent().size())));
-    }
+                response.andExpect(MockMvcResultMatchers.status().isOk())
+                                .andExpect(MockMvcResultMatchers.jsonPath("$.content.size()",
+                                                CoreMatchers.is(responseDto.getContent().size())));
+        }
 
-    @Test
-    public void UserController_UserDetails_ReturnUserDto() throws Exception {
-        int userId = 1;
-        when(userSerive.getUserById(userId)).thenReturn(userDto);
+        @Test
+        public void UserController_UserDetails_ReturnUserDto() throws Exception {
+                int userId = 1;
+                when(userSerive.getUserById(userId)).thenReturn(userDto);
 
-        ResultActions response = mockMvc.perform(get("/user/1")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(userDto)));
+                ResultActions response = mockMvc.perform(get("/user/1")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(objectMapper.writeValueAsString(userDto)));
 
-        response.andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.userName", CoreMatchers.is(userDto.getUserName())))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.emailAddress", CoreMatchers.is(userDto.getEmailAddress())))
-                .andExpect(
-                        MockMvcResultMatchers.jsonPath("$.userPassword", CoreMatchers.is(userDto.getUserPassword())));
-    }
+                response.andExpect(MockMvcResultMatchers.status().isOk())
+                                .andExpect(MockMvcResultMatchers.jsonPath("$.userName",
+                                                CoreMatchers.is(userDto.getUserName())))
+                                .andExpect(MockMvcResultMatchers.jsonPath("$.emailAddress",
+                                                CoreMatchers.is(userDto.getEmailAddress())))
+                                .andExpect(
+                                                MockMvcResultMatchers.jsonPath("$.userPassword",
+                                                                CoreMatchers.is(userDto.getUserPassword())));
+        }
 
-    @Test
-    public void UserControll_UpdateUser_ReturnUserDto() throws Exception {
-        int userId = 1;
-        when(userSerive.updateUser(userDto, userId)).thenReturn(userDto);
+        @Test
+        public void UserControll_UpdateUser_ReturnUserDto() throws Exception {
+                int userId = 1;
+                when(userSerive.updateUser(userDto, userId)).thenReturn(userDto);
 
-        ResultActions response = mockMvc.perform(put("/user/1/update")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(userDto)));
+                ResultActions response = mockMvc.perform(put("/user/1/update")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(objectMapper.writeValueAsString(userDto)));
 
-        response.andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.userName", CoreMatchers.is(userDto.getUserName())))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.emailAddress", CoreMatchers.is(userDto.getEmailAddress())))
-                .andExpect(
-                        MockMvcResultMatchers.jsonPath("$.userPassword", CoreMatchers.is(userDto.getUserPassword())));
-    }
+                response.andExpect(MockMvcResultMatchers.status().isOk())
+                                .andExpect(MockMvcResultMatchers.jsonPath("$.userName",
+                                                CoreMatchers.is(userDto.getUserName())))
+                                .andExpect(MockMvcResultMatchers.jsonPath("$.emailAddress",
+                                                CoreMatchers.is(userDto.getEmailAddress())))
+                                .andExpect(
+                                                MockMvcResultMatchers.jsonPath("$.userPassword",
+                                                                CoreMatchers.is(userDto.getUserPassword())));
+        }
 
-    @Test
-    public void UserControll_DeleteUser_ReturnString() throws Exception {
-        int userId = 1;
-        doNothing().when(userSerive).deleteUser(userId);
+        @Test
+        public void UserControll_DeleteUser_ReturnString() throws Exception {
+                int userId = 1;
+                doNothing().when(userSerive).deleteUser(userId);
 
-        ResultActions response = mockMvc.perform(delete("/user/1/delete")
-                .contentType(MediaType.APPLICATION_JSON));
+                ResultActions response = mockMvc.perform(delete("/user/1/delete")
+                                .contentType(MediaType.APPLICATION_JSON));
 
-        response.andExpect(MockMvcResultMatchers.status().isOk());
-    }
+                response.andExpect(MockMvcResultMatchers.status().isOk());
+        }
 }

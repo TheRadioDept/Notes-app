@@ -70,8 +70,8 @@ public class UserServiceImpl implements UserSerive {
         User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("User could not be found"));
 
         user.setUserName(userDto.getUserName());
-        user.setEmailAddress(user.getEmailAddress());
-        user.setUserPassword(user.getUserPassword());
+        user.setEmailAddress(userDto.getEmailAddress());
+        user.setUserPassword(userDto.getUserPassword());
 
         User updateUser = userRepository.save(user);
         return mapToDto(updateUser);

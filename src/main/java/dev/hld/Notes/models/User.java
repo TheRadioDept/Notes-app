@@ -2,57 +2,35 @@ package dev.hld.Notes.models;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.UUID;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
 
+@Data
+@AllArgsConstructor
 @NoArgsConstructor
-@Entity
-@Table(name = "users")
-@Data public class User {
+@Builder
+@Entity(name = "users")
+public class User {
 
-    @Id
-    @GeneratedValue(generator = "system-uuid", strategy = GenerationType.AUTO)
-    @Column(name = "userId", unique = true)
-    private String userId;
+   @Id
+   @GeneratedValue(strategy = GenerationType.IDENTITY)
+   private int id;
+   private String userName;
+   private String emailAddress;
+   private String userPassword;
 
-    @Column(name = "userName")
-    private String userName;
+   @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+   private Set<Note> notes = new HashSet<>();
 
-    @Column(name = "email")
-    private String email;
-
-    @Column(name = "password")
-    private String password;
-
-    @Column(name = "dateOfBirth")
-    private String dateOfBirth;
-
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    @JoinColumn(name = "userId")
-    private Set<Note> notes = new HashSet<>();
-
-    public User(String userId, String userName, String email, String password, String dateOfBirth) {
-        this.userId = userId;
-        this.userName = userName;
-        this.email = email;
-        this.password = password;
-        this.dateOfBirth = dateOfBirth;
-    }
-
-    public User(String userName, String email, String password, String dateOfBirth) {
-        this(UUID.randomUUID().toString(), userName, email, password, dateOfBirth);
-    }
 }

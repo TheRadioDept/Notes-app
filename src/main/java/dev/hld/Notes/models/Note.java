@@ -1,33 +1,32 @@
 package dev.hld.Notes.models;
 
-import java.util.UUID;
-
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 
+@Data
+@AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Entity
-@Table(name = "Notes")
-@Data public class Note {
+public class Note {
 
     @Id
-    @GeneratedValue(generator = "system-uuid", strategy = GenerationType.AUTO)
-    private String noteId;
-
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+    private String topic;
     private String noteBody;
 
-    public Note(String noteId, String noteBody) {
-        this.noteId = noteId;
-        this.noteBody = noteBody;
-    }
-
-    public Note(String noteBody) {
-        this(UUID.randomUUID().toString(), noteBody);
-    }
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 }

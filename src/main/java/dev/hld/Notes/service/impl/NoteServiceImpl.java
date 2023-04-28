@@ -27,15 +27,16 @@ public class NoteServiceImpl implements NoteService {
     @Override
     public NoteDto createNote(int userId, NoteDto noteDto) {
         Note note = mapToEntity(noteDto);
-    
-        User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("User with associated id not found"));
-    
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException("User with associated id not found"));
+
         note.setUser(user);
-    
+
         Note newNote = notesRepository.save(note);
-    
+
         return mapToDto(newNote);
-      }
+    }
 
     @Override
     public List<NoteDto> getNoteByUserid(int userId) {

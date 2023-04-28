@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 
 @RestController
 public class NotesController {
-    
+
     private NoteService noteService;
 
     public NotesController(NoteService noteService) {
@@ -28,7 +28,8 @@ public class NotesController {
 
     @PostMapping("/user/{userId}/note")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<NoteDto> createNote(@PathVariable(value = "userId") int userId, @RequestBody NoteDto noteDto) {
+    public ResponseEntity<NoteDto> createNote(@PathVariable(value = "userId") int userId,
+            @RequestBody NoteDto noteDto) {
         return new ResponseEntity<>(noteService.createNote(userId, noteDto), HttpStatus.CREATED);
     }
 
@@ -38,20 +39,23 @@ public class NotesController {
     }
 
     @GetMapping("/user/{userId}/notes/{id}")
-    public ResponseEntity<NoteDto> getNoteById(@PathVariable(value = "userId") int userId, @PathVariable(value = "id") int noteId) {
+    public ResponseEntity<NoteDto> getNoteById(@PathVariable(value = "userId") int userId,
+            @PathVariable(value = "id") int noteId) {
         NoteDto noteDto = noteService.getNoteById(userId, noteId);
         return new ResponseEntity<>(noteDto, HttpStatus.OK);
     }
 
     @PutMapping("/user/{userId}/notes/{id}")
-    public ResponseEntity<NoteDto> updateNote(@PathVariable(value = "userId") int userId, @PathVariable(value = "id") int reviewId,
-                                                  @RequestBody NoteDto noteDto) {
+    public ResponseEntity<NoteDto> updateNote(@PathVariable(value = "userId") int userId,
+            @PathVariable(value = "id") int reviewId,
+            @RequestBody NoteDto noteDto) {
         NoteDto updatedNote = noteService.updateNote(userId, reviewId, noteDto);
         return new ResponseEntity<>(updatedNote, HttpStatus.OK);
     }
 
     @DeleteMapping("/user/{userId}/notes/{id}")
-    public ResponseEntity<String> deleteNote(@PathVariable(value = "userId") int userId, @PathVariable(value = "id") int noteId) {
+    public ResponseEntity<String> deleteNote(@PathVariable(value = "userId") int userId,
+            @PathVariable(value = "id") int noteId) {
         noteService.deleteNote(userId, noteId);
         return new ResponseEntity<>("Note deleted successfully", HttpStatus.OK);
     }
